@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from products.models import Product
 
+
 # Create your views here.
 
 def main_view(request):
@@ -14,5 +15,5 @@ def products_view(request):
 
         context = {'products': products
 
-        }
+                   }
         return render(request, 'products/products.html', context=context)
