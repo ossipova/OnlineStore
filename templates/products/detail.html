@@ -1,0 +1,39 @@
+{% extends 'layouts/index.html' %}
+
+{% block content %}
+    <style type="text/css">
+    .product {
+        width: 80%;
+        margin-left: 10%;
+    }
+    .product > h1 {
+        color: red;
+    }
+    .reviews_title {
+        margin-top: 30px;
+        color: green;
+    }
+    .reviews {
+        background: #242b2e;
+        padding: 20px;
+        color: white;
+        margin-bottom: 20px;
+    }
+    </style>
+    <div class="product">
+    <h1>{{ product.title }}</h1>
+    <h2>{{ product.currency }} {{ product.price}}</h2>
+    <h5>{{ product.description }}</h5>
+    <h5>Rate: {{ product.rate }}</h5>
+    <h5 class="reviews_title"> Reviews:</h5>
+    <div class="reviews">
+        {% for review in reviews %}
+            <div class="review">
+            <h5>{{ review.text }}</h5>
+            <p>{{ review.created_date }}</p>
+            </div>
+        {% endfor %}
+    </div>
+
+    </div>
+{% endblock %}

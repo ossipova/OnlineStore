@@ -14,9 +14,9 @@
             <div class="card" style="width: 18rem;">
   <div class="card-body">
     <h5 class="card-title">{{product.title}}</h5>
-    <h6 class="card-subtitle mb-2 text-muted">{{product.price}}</h6>
-      <p class="card-text">{{ product.rate }}</p>
-    <a href="#" class="card-link">More info</a>
+    <h6 class="card-subtitle mb-2 text-muted">{{product.price}} {{ product.currency }}</h6>
+      <p class="card-text">{{product.rate }}</p>
+    <a href="/products/{{ product.id }}" class="card-link">More info</a>
   </div>
 </div>
         {% endfor %}
