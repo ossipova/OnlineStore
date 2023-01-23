@@ -19,8 +19,16 @@
         color: white;
         margin-bottom: 20px;
     }
+    .product > img {
+        width: 200px;
+    }
     </style>
     <div class="product">
+        {% if product.image %}
+            <img src="/media/{{ product.image }}" alt="">
+        {% else %}
+            <img src="https://user-images.githubusercontent.com/43302778/106805462-7a908400-6645-11eb-958f-cd72b74a17b3.jpg" alt="">
+        {% endif %}
     <h1>{{ product.title }}</h1>
     <h2>{{ product.currency }} {{ product.price}}</h2>
     <h5>{{ product.description }}</h5>
