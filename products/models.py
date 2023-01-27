@@ -10,6 +10,7 @@ class Product(models.Model):
     price = models.FloatField()
     currency = models.CharField(max_length=3, null=True)
     rate = models.FloatField()
+    commentable = models.BooleanField(default=True)
 
 
 class Review(models.Model):
