@@ -14,8 +14,8 @@ def products_view(request):
     if request.method == 'GET':
         products = Product.objects.all()
 
-        context = {'products': products
-
+        context = {'products': products,
+                   'user': request.user
                    }
         return render(request, 'products/products.html', context=context)
 
@@ -28,7 +28,8 @@ def product_detail_view(request, product_id):
         context = {
             'product': product,
             'reviews': reviews,
-            'form': ReviewCreateForm
+            'form': ReviewCreateForm,
+            'user': request.user
         }
 
         return render(request, 'products/detail.html', context=context)
@@ -40,6 +41,7 @@ def product_detail_view(request, product_id):
         form = ReviewCreateForm(data=request.POST)
         if form.is_valid():
             Review.objects.create(
+                author=request.user,
                 text=form.cleaned_data.get('text'),
                 product=product
             )
@@ -70,7 +72,7 @@ def create_product_view(request):
                 rate=form.cleaned_data.get('rate'),
                 commentable=form.cleaned_data.get('commentable')
             )
-            return redirect ('/products')
+            return redirect('/products')
         return render(request, 'products/create.html', context={
             'form': form
         })
