@@ -2,8 +2,10 @@ from django.shortcuts import render, redirect
 from products.models import Product, Review
 from products.forms import ProductCreateForm, ReviewCreateForm
 
-
 # Create your views here.
+
+PAGINATION_LIMIT = 3
+
 
 def main_view(request):
     if request.method == 'GET':
@@ -13,10 +15,31 @@ def main_view(request):
 def products_view(request):
     if request.method == 'GET':
         products = Product.objects.all()
+        search = request.GET.get('search')
+        page = int(request.GET.get('page', 1))
 
-        context = {'products': products,
-                   'user': request.user
-                   }
+        if search:
+            products = Product.objects.filter(
+                description__icontains=search
+            ) | Product.objects.filter(
+                title__icontains=search
+            )
+
+        """max page"""
+        max_page = products.__len__() / PAGINATION_LIMIT
+        if round(max_page) < max_page:
+            max_page = round(max_page) + 1
+        else:
+            max_page = round(max_page)
+
+        """slice posts by page"""
+        products = products[PAGINATION_LIMIT * (page-1):PAGINATION_LIMIT * page]
+
+        context = {
+            'products': products,
+            'user': request.user,
+            'max_page': range(1, max_page+1)
+         }
         return render(request, 'products/products.html', context=context)
 
 

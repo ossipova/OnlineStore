@@ -9,3 +9,9 @@
     width: 100%;
     height: 150px;
 }
+
+.pages {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+}
