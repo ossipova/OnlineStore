@@ -15,15 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from products.views import main_view, products_view, product_detail_view, create_product_view
+from products.views import product_detail_view, create_product_view, MainView, ProductsCBV
 from OnlineStore.settings import MEDIA_URL, MEDIA_ROOT
 from django.conf.urls.static import static
 from users.views import auth_view, logout_view, register_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', main_view),
-    path('products/', products_view),
+    path('', MainView.as_view(template_name='layouts/index.html')),
+    path('products/', ProductsCBV.as_view(template_name='products/products.html')),
     path('products/<int:product_id>/', product_detail_view),
     path('products/create/', create_product_view),
 

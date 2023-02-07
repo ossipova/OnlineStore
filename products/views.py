@@ -1,27 +1,29 @@
 from django.shortcuts import render, redirect
 from products.models import Product, Review
 from products.forms import ProductCreateForm, ReviewCreateForm
+from django.views.generic import ListView
 
 # Create your views here.
 
 PAGINATION_LIMIT = 3
 
 
-def main_view(request):
-    if request.method == 'GET':
-        return render(request, 'layouts/index.html')
+class MainView(ListView):
+    model = Product
 
 
-def products_view(request):
-    if request.method == 'GET':
-        products = Product.objects.all()
+class ProductsCBV(ListView):
+    model = Product
+
+    def get(self, request, **kwargs):
+        products = self.get_queryset()
         search = request.GET.get('search')
         page = int(request.GET.get('page', 1))
 
         if search:
-            products = Product.objects.filter(
+            products = self.model.objects.filter(
                 description__icontains=search
-            ) | Product.objects.filter(
+            ) | self.model.objects.filter(
                 title__icontains=search
             )
 
@@ -33,14 +35,14 @@ def products_view(request):
             max_page = round(max_page)
 
         """slice posts by page"""
-        products = products[PAGINATION_LIMIT * (page-1):PAGINATION_LIMIT * page]
+        products = products[PAGINATION_LIMIT * (page - 1):PAGINATION_LIMIT * page]
 
         context = {
             'products': products,
             'user': request.user,
-            'max_page': range(1, max_page+1)
-         }
-        return render(request, 'products/products.html', context=context)
+            'max_page': range(1, max_page + 1)
+        }
+        return render(request, self.template_name, context=context)
 
 
 def product_detail_view(request, product_id):
